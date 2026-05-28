@@ -1,0 +1,164 @@
+<div class="page-shell">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Administración</p>
+      <h1>Tickets</h1>
+      <p class="description">Gestiona los tickets registrados en el sistema.</p>
+    </div>
+
+    <button type="button" class="primary-btn" (click)="volverDashboard()">
+      Volver al dashboard
+    </button>
+  </header>
+
+  <section *ngIf="error" class="alert alert-error">
+    {{ error }}
+  </section>
+
+  <section class="grid">
+    <div class="card form-card">
+      <h2>{{ editando ? 'Editar ticket' : 'Nuevo ticket' }}</h2>
+
+      <form #f="ngForm" (ngSubmit)="guardar()">
+        <label>
+          Código del ticket
+          <input
+            type="text"
+            name="codigoTicket"
+            [(ngModel)]="modelo.codigoTicket"
+            required
+          />
+        </label>
+
+        <label>
+          Hora de entrada
+          <input
+            type="datetime-local"
+            name="horaEntrada"
+            [(ngModel)]="modelo.horaEntrada"
+            required
+          />
+        </label>
+
+        <label>
+          Hora de salida
+          <input
+            type="datetime-local"
+            name="horaSalida"
+            [(ngModel)]="modelo.horaSalida"
+          />
+        </label>
+
+        <label>
+          Estado
+          <select
+            name="estado"
+            [(ngModel)]="modelo.estado"
+            required
+          >
+            <option *ngFor="let estado of estadosTicket" [value]="estado">
+              {{ estado }}
+            </option>
+          </select>
+        </label>
+
+        <label>
+          Vehículo
+          <select
+            name="vehiculoId"
+            [(ngModel)]="modelo.vehiculoId"
+            required
+          >
+            <option [ngValue]="null">Seleccione un vehículo</option>
+            <option *ngFor="let v of vehiculos" [ngValue]="v.id">
+              {{ v.placa }} - {{ v.marca }} {{ v.modelo }}
+            </option>
+          </select>
+        </label>
+
+        <label>
+          Espacio
+          <select
+            name="espacioId"
+            [(ngModel)]="modelo.espacioId"
+            required
+          >
+            <option [ngValue]="null">Seleccione un espacio</option>
+            <option *ngFor="let e of espaciosDisponibles" [ngValue]="e.id">
+              {{ e.codigo }} - {{ e.ubicacion }} ({{ e.tipoVehiculoPermitido }})
+            </option>
+          </select>
+        </label>
+
+        <div class="form-actions">
+          <button
+            type="submit"
+            class="primary-btn"
+            [disabled]="loading || f.invalid"
+          >
+            {{ editando ? 'Actualizar' : 'Guardar' }}
+          </button>
+
+          <button
+            type="button"
+            class="secondary-btn"
+            (click)="nuevo()"
+          >
+            Limpiar
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="card list-card">
+      <div class="list-header">
+        <h2>Listado de tickets</h2>
+        <span>{{ tickets.length }} total</span>
+      </div>
+
+      <div *ngIf="loading" class="empty-state">
+        Cargando...
+      </div>
+
+      <div *ngIf="!loading && !tickets.length" class="empty-state">
+        No hay tickets registrados.
+      </div>
+
+      <table *ngIf="!loading && tickets.length">
+        <thead>
+          <tr>
+            <th>Código</th>
+            <th>Hora entrada</th>
+            <th>Hora salida</th>
+            <th>Estado</th>
+            <th>Total</th>
+            <th>Vehículo ID</th>
+            <th>Espacio ID</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let t of tickets">
+            <td>{{ t.codigoTicket }}</td>
+            <td>{{ t.horaEntrada }}</td>
+            <td>{{ t.horaSalida || 'Sin salida' }}</td>
+            <td>{{ t.estado }}</td>
+            <td>{{ t.total }}</td>
+            <td>{{ t.vehiculoId }}</td>
+            <td>{{ t.espacioId }}</td>
+            <td class="actions">
+              <button type="button" (click)="editar(t)">Editar</button>
+              <button
+                type="button"
+                class="danger"
+                (click)="eliminar(t)"
+              >
+                Eliminar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>

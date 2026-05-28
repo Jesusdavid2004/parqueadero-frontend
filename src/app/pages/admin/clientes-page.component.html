@@ -1,0 +1,138 @@
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand">P.</div>
+
+    <nav class="sidebar-nav">
+      <button class="nav-item" (click)="volverDashboard()" title="Dashboard">
+        ⌂
+      </button>
+      <button class="nav-item active" title="Clientes">
+        👥
+      </button>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <header class="page-header">
+      <div>
+        <p class="eyebrow">Administración</p>
+        <h1>Clientes</h1>
+        <p class="description">Gestiona los clientes del sistema de parqueadero.</p>
+      </div>
+
+      <button class="primary-btn" (click)="nuevo()">Nuevo cliente</button>
+    </header>
+
+    <section *ngIf="error" class="alert alert-error">
+      {{ error }}
+    </section>
+
+    <section class="grid">
+      <div class="card form-card">
+        <h2>{{ editando ? 'Editar cliente' : 'Nuevo cliente' }}</h2>
+
+        <form #f="ngForm" (ngSubmit)="guardar()">
+          <label>
+            Identificación
+            <input
+              type="text"
+              name="identificacion"
+              [(ngModel)]="modelo.identificacion"
+              required
+            />
+          </label>
+
+          <label>
+            Nombre
+            <input
+              type="text"
+              name="nombre"
+              [(ngModel)]="modelo.nombre"
+              required
+            />
+          </label>
+
+          <label>
+            Teléfono
+            <input
+              type="text"
+              name="telefono"
+              [(ngModel)]="modelo.telefono"
+              required
+            />
+          </label>
+
+          <label>
+            Correo
+            <input
+              type="email"
+              name="correo"
+              [(ngModel)]="modelo.correo"
+              required
+            />
+          </label>
+
+          <label>
+            Dirección
+            <input
+              type="text"
+              name="direccion"
+              [(ngModel)]="modelo.direccion"
+              required
+            />
+          </label>
+
+          <div class="form-actions">
+            <button type="submit" class="primary-btn" [disabled]="loading || f.invalid">
+              {{ editando ? 'Actualizar' : 'Guardar' }}
+            </button>
+
+            <button type="button" class="secondary-btn" (click)="nuevo()">
+              Limpiar
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card list-card">
+        <div class="list-header">
+          <h2>Listado de clientes</h2>
+          <span>{{ clientes.length }} total</span>
+        </div>
+
+        <div *ngIf="loading" class="empty-state">Cargando...</div>
+        <div *ngIf="!loading && !clientes.length" class="empty-state">
+          No hay clientes registrados.
+        </div>
+
+        <table *ngIf="!loading && clientes.length">
+          <thead>
+            <tr>
+              <th>Identificación</th>
+              <th>Nombre</th>
+              <th>Teléfono</th>
+              <th>Correo</th>
+              <th>Dirección</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let c of clientes">
+              <td>{{ c.identificacion }}</td>
+              <td>{{ c.nombre }}</td>
+              <td>{{ c.telefono }}</td>
+              <td>{{ c.correo }}</td>
+              <td>{{ c.direccion }}</td>
+              <td class="actions">
+                <button type="button" (click)="editar(c)">Editar</button>
+                <button type="button" class="danger" (click)="eliminar(c)">Eliminar</button>
+                <button type="button" (click)="crearAcceso(c)">Crear acceso</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>

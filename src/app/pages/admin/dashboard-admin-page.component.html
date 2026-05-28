@@ -1,0 +1,190 @@
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand">P.</div>
+
+    <nav class="sidebar-nav">
+      <button
+        class="nav-home"
+        type="button"
+        title="Dashboard admin"
+        [class.active]="esRutaActiva('/admin')"
+        (click)="navegarDashboard()"
+      >
+        Inicio
+      </button>
+
+      <div class="sidebar-menu" *ngIf="menuSidebar.length">
+        <ng-container
+          *ngTemplateOutlet="menuSidebarNode; context: { $implicit: menuSidebar, nivel: 0 }"
+        ></ng-container>
+      </div>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <button
+        class="nav-logout"
+        type="button"
+        title="Cerrar sesión"
+        (click)="logout()"
+      >
+        Salir
+      </button>
+    </div>
+  </aside>
+
+  <main class="dashboard">
+    <section class="main-panel">
+      <div class="hero-card">
+        <div>
+          <p class="eyebrow">Sistema de parqueadero</p>
+          <h1>Hola, administrador</h1>
+          <p class="hero-text">
+            Administra clientes, vehículos, tickets, pagos, facturas, reservas y
+            verifica el árbol de menú conectado al backend.
+          </p>
+          <button class="secondary-btn" type="button" (click)="navegarCliente()">
+            Ver vista como cliente
+          </button>
+        </div>
+
+        <div class="hero-illustration">
+          <div class="circle"></div>
+          <span>🚘</span>
+        </div>
+      </div>
+
+      <section *ngIf="error" class="empty-state">
+        {{ error }}
+      </section>
+
+      <div class="quick-grid">
+        <div class="quick-card">
+          <h3>{{ clientes.length }}</h3>
+          <p>Clientes registrados</p>
+        </div>
+
+        <div class="quick-card">
+          <h3>{{ vehiculos.length }}</h3>
+          <p>Vehículos registrados</p>
+        </div>
+
+        <div class="quick-card">
+          <h3>{{ tickets.length }}</h3>
+          <p>Tickets creados</p>
+        </div>
+      </div>
+
+      <section class="section-card">
+        <div class="section-header">
+          <h2>Clientes recientes</h2>
+          <span>{{ clientes.length }} total</span>
+        </div>
+
+        <div class="list-table" *ngIf="clientes.length > 0; else noClientes">
+          <div class="row" *ngFor="let cliente of clientes.slice(0, 5)">
+            <div class="title-block">
+              <strong>{{ cliente.nombre }}</strong>
+              <small>{{ cliente.correo }}</small>
+            </div>
+            <span>{{ cliente.identificacion }}</span>
+            <span>{{ cliente.telefono }}</span>
+          </div>
+        </div>
+
+        <ng-template #noClientes>
+          <div class="empty-state">No hay clientes para mostrar.</div>
+        </ng-template>
+      </section>
+
+      <section class="section-card">
+        <div class="section-header">
+          <h2>Vehículos</h2>
+          <span>{{ vehiculos.length }} total</span>
+        </div>
+
+        <div class="list-table" *ngIf="vehiculos.length > 0; else noVehiculos">
+          <div class="row" *ngFor="let vehiculo of vehiculos.slice(0, 5)">
+            <div class="title-block">
+              <strong>{{ vehiculo.placa }}</strong>
+              <small>{{ vehiculo.marca }} {{ vehiculo.modelo }}</small>
+            </div>
+            <span>{{ vehiculo.tipoVehiculo }}</span>
+            <span>{{ vehiculo.color }}</span>
+          </div>
+        </div>
+
+        <ng-template #noVehiculos>
+          <div class="empty-state">No hay vehículos para mostrar.</div>
+        </ng-template>
+      </section>
+    </section>
+
+    <aside class="right-panel">
+      <div class="stats-card">
+        <div class="mini-stats">
+          <div class="mini-box">
+            <h3>{{ pagos.length }}</h3>
+            <p>Pagos</p>
+          </div>
+
+          <div class="mini-box">
+            <h3>{{ facturas.length }}</h3>
+            <p>Facturas</p>
+          </div>
+        </div>
+
+        <div class="analytics">
+          <h3>Resumen general</h3>
+
+          <div class="metric-line">
+            <span>Reservas</span>
+            <strong>{{ reservas.length }}</strong>
+          </div>
+
+          <div class="metric-line">
+            <span>Tickets</span>
+            <strong>{{ tickets.length }}</strong>
+          </div>
+
+          <div class="metric-line">
+            <span>Nodos de menú</span>
+            <strong>{{ contarMenus(menus) }}</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="promo-card">
+        <h3>Estado del sistema</h3>
+        <p>
+          El dashboard está conectado al backend Spring Boot y consulta clientes,
+          vehículos, tickets, pagos, facturas, reservas y menú.
+        </p>
+        <button type="button" (click)="cargarDatos()">Actualizar datos</button>
+      </div>
+    </aside>
+  </main>
+</div>
+
+<ng-template #menuSidebarNode let-items let-nivel="nivel">
+  <div class="menu-level" [class.is-child]="nivel > 0">
+    <div class="menu-item" *ngFor="let item of items">
+      <button
+        type="button"
+        class="menu-link"
+        [class.has-children]="item.hijos?.length"
+        [class.active]="esRutaActiva(item.ruta)"
+        [class.inactive]="!item.activo"
+        [disabled]="!item.activo"
+        (click)="irRutaMenu(item)"
+      >
+        {{ item.nombre }}
+      </button>
+
+      <div class="menu-children" *ngIf="item.hijos?.length">
+        <ng-container
+          *ngTemplateOutlet="menuSidebarNode; context: { $implicit: item.hijos, nivel: nivel + 1 }"
+        ></ng-container>
+      </div>
+    </div>
+  </div>
+</ng-template>

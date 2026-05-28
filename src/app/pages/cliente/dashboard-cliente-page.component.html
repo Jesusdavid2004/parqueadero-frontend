@@ -1,0 +1,56 @@
+<div class="cliente-shell">
+  <header>
+    <div>
+      <p class="eyebrow">Zona cliente</p>
+      <h1>Hola, {{ username }}</h1>
+      <p *ngIf="nombreCliente">Cliente: {{ nombreCliente }}</p>
+      <p *ngIf="error" class="empty-state">{{ error }}</p>
+    </div>
+
+    <button type="button" (click)="logout()">Cerrar sesión</button>
+  </header>
+
+  <section class="panel">
+    <h2>Resumen</h2>
+
+    <div class="item">
+      <strong>Total vehículos</strong>
+      <span>{{ totalVehiculos }}</span>
+    </div>
+
+    <div class="item">
+      <strong>Total tickets</strong>
+      <span>{{ totalTickets }}</span>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Mis vehículos</h2>
+
+    <div *ngIf="vehiculos.length; else noVehiculos">
+      <div *ngFor="let v of vehiculos" class="item">
+        <strong>{{ v.placa }}</strong>
+        <span>{{ v.marca }} {{ v.modelo }} - {{ v.color }} - {{ v.tipoVehiculo }}</span>
+      </div>
+    </div>
+
+    <ng-template #noVehiculos>
+      <p class="empty-state">No tienes vehículos registrados todavía.</p>
+    </ng-template>
+  </section>
+
+  <section class="panel">
+    <h2>Mis tickets</h2>
+
+    <div *ngIf="tickets.length; else noTickets">
+      <div *ngFor="let t of tickets" class="item">
+        <strong>{{ t.codigoTicket }}</strong>
+        <span>Estado: {{ t.estado }} | Total: {{ t.total }}</span>
+      </div>
+    </div>
+
+    <ng-template #noTickets>
+      <p class="empty-state">No tienes tickets registrados.</p>
+    </ng-template>
+  </section>
+</div>

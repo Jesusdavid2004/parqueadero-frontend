@@ -1,0 +1,47 @@
+<div class="login-shell">
+  <div class="login-card">
+    <div class="badge">PARQUEADERO</div>
+
+    <h1>Bienvenido</h1>
+    <p class="subtitle">
+      Inicia sesión con tu usuario para ingresar al sistema.
+    </p>
+
+    <div *ngIf="error" class="alert alert-error">
+      {{ error }}
+    </div>
+
+    <form class="login-form" #f="ngForm" (ngSubmit)="login()">
+      <label>
+        Usuario
+        <input
+          type="text"
+          name="username"
+          [(ngModel)]="modelo.username"
+          required
+          placeholder="Ingresa tu username"
+        />
+      </label>
+
+      <label>
+        Contraseña
+        <input
+          type="password"
+          name="password"
+          [(ngModel)]="modelo.password"
+          required
+          placeholder="Ingresa tu contraseña"
+        />
+      </label>
+
+      <button type="submit" [disabled]="loading || f.invalid">
+        {{ loading ? 'Ingresando...' : 'Iniciar sesión' }}
+      </button>
+    </form>
+
+    <div class="register-link">
+      <span>¿No tienes cuenta?</span>
+      <a routerLink="/register">Regístrate aquí</a>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,113 @@
+<div class="page-shell">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Administración</p>
+      <h1>Vehículos</h1>
+      <p class="description">Gestiona los vehículos registrados en el sistema.</p>
+    </div>
+
+    <button type="button" class="primary-btn" (click)="volverDashboard()">
+      Volver al dashboard
+    </button>
+  </header>
+
+  <section *ngIf="error" class="alert alert-error">
+    {{ error }}
+  </section>
+
+  <section class="grid">
+    <div class="card form-card">
+      <h2>{{ editando ? 'Editar vehículo' : 'Nuevo vehículo' }}</h2>
+
+      <form #f="ngForm" (ngSubmit)="guardar()">
+        <label>
+          Placa
+          <input type="text" name="placa" [(ngModel)]="modelo.placa" required />
+        </label>
+
+        <label>
+          Marca
+          <input type="text" name="marca" [(ngModel)]="modelo.marca" required />
+        </label>
+
+        <label>
+          Modelo
+          <input type="text" name="modeloVehiculo" [(ngModel)]="modelo.modelo" required />
+        </label>
+
+        <label>
+          Color
+          <input type="text" name="color" [(ngModel)]="modelo.color" required />
+        </label>
+
+        <label>
+          Tipo de vehículo
+          <select name="tipoVehiculo" [(ngModel)]="modelo.tipoVehiculo" required>
+            <option *ngFor="let tipo of tiposVehiculo" [value]="tipo">{{ tipo }}</option>
+          </select>
+        </label>
+
+        <label>
+          Cliente
+          <select name="clienteId" [(ngModel)]="modelo.clienteId" required>
+            <option [ngValue]="null">Seleccione un cliente</option>
+            <option *ngFor="let c of clientes" [ngValue]="c.id">
+              {{ c.nombre }} - {{ c.identificacion }}
+            </option>
+          </select>
+        </label>
+
+        <div class="form-actions">
+          <button type="submit" class="primary-btn" [disabled]="loading || f.invalid">
+            {{ editando ? 'Actualizar' : 'Guardar' }}
+          </button>
+
+          <button type="button" class="secondary-btn" (click)="nuevo()">
+            Limpiar
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="card list-card">
+      <div class="list-header">
+        <h2>Listado de vehículos</h2>
+        <span>{{ vehiculos.length }} total</span>
+      </div>
+
+      <div *ngIf="loading" class="empty-state">Cargando...</div>
+
+      <div *ngIf="!loading && !vehiculos.length" class="empty-state">
+        No hay vehículos registrados.
+      </div>
+
+      <table *ngIf="!loading && vehiculos.length">
+        <thead>
+          <tr>
+            <th>Placa</th>
+            <th>Marca</th>
+            <th>Modelo</th>
+            <th>Color</th>
+            <th>Tipo</th>
+            <th>Cliente ID</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let v of vehiculos">
+            <td>{{ v.placa }}</td>
+            <td>{{ v.marca }}</td>
+            <td>{{ v.modelo }}</td>
+            <td>{{ v.color }}</td>
+            <td>{{ v.tipoVehiculo }}</td>
+            <td>{{ v.clienteId }}</td>
+            <td class="actions">
+              <button type="button" (click)="editar(v)">Editar</button>
+              <button type="button" class="danger" (click)="eliminar(v)">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>

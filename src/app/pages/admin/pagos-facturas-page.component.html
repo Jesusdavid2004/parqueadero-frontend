@@ -1,0 +1,189 @@
+<div class="page-shell">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Administración</p>
+      <h1>Pagos y facturas</h1>
+      <p class="description">Gestiona pagos registrados y genera facturas del sistema.</p>
+    </div>
+
+    <button type="button" class="primary-btn" (click)="volverDashboard()">
+      Volver al dashboard
+    </button>
+  </header>
+
+  <section class="grid-top">
+    <div class="card form-card">
+      <div class="section-title">
+        <h2>Nuevo pago</h2>
+      </div>
+
+      <section *ngIf="errorPagos" class="alert alert-error">
+        {{ errorPagos }}
+      </section>
+
+      <form #pagoForm="ngForm" (ngSubmit)="guardarPago()">
+        <label>
+          Método de pago
+          <select name="metodoPago" [(ngModel)]="modeloPago.metodoPago" required>
+            <option *ngFor="let metodo of metodosPago" [value]="metodo">
+              {{ metodo }}
+            </option>
+          </select>
+        </label>
+
+        <label>
+          Estado
+          <select name="estado" [(ngModel)]="modeloPago.estado" required>
+            <option *ngFor="let estado of estadosPago" [value]="estado">
+              {{ estado }}
+            </option>
+          </select>
+        </label>
+
+        <label>
+          Referencia
+          <input type="text" name="referencia" [(ngModel)]="modeloPago.referencia" required />
+        </label>
+
+        <label>
+          Fecha
+          <input type="datetime-local" name="fecha" [(ngModel)]="modeloPago.fecha" required />
+        </label>
+
+        <label>
+          Ticket
+          <select name="ticketId" [(ngModel)]="modeloPago.ticketId" required>
+            <option [ngValue]="null">Seleccione un ticket</option>
+            <option *ngFor="let t of tickets" [ngValue]="t.id">
+              {{ t.codigoTicket }} - Vehículo {{ t.vehiculoId }} - Total {{ t.total }}
+            </option>
+          </select>
+        </label>
+
+        <div class="form-actions">
+          <button type="submit" class="primary-btn" [disabled]="loadingPagos || pagoForm.invalid">
+            Guardar pago
+          </button>
+          <button type="button" class="secondary-btn" (click)="nuevoPago()">
+            Limpiar
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="card form-card">
+      <div class="section-title">
+        <h2>Nueva factura</h2>
+      </div>
+
+      <section *ngIf="errorFacturas" class="alert alert-error">
+        {{ errorFacturas }}
+      </section>
+
+      <form #facturaForm="ngForm" (ngSubmit)="guardarFactura()">
+        <label>
+          Pago
+          <select name="pagoId" [(ngModel)]="modeloFactura.pagoId" required>
+            <option [ngValue]="null">Seleccione un pago</option>
+            <option *ngFor="let p of pagos" [ngValue]="p.id">
+              Pago {{ p.id }} - Ref {{ p.referencia }} - {{ p.monto }}
+            </option>
+          </select>
+        </label>
+
+        <div class="form-actions">
+          <button type="submit" class="primary-btn" [disabled]="loadingFacturas || facturaForm.invalid">
+            Guardar factura
+          </button>
+          <button type="button" class="secondary-btn" (click)="nuevaFactura()">
+            Limpiar
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <section class="grid-bottom">
+    <div class="card list-card">
+      <div class="list-header">
+        <h2>Listado de pagos</h2>
+        <span>{{ pagos.length }} total</span>
+      </div>
+
+      <div *ngIf="loadingPagos" class="empty-state">Cargando pagos...</div>
+
+      <div *ngIf="!loadingPagos && !pagos.length" class="empty-state">
+        No hay pagos registrados.
+      </div>
+
+      <table *ngIf="!loadingPagos && pagos.length">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Monto</th>
+            <th>Método</th>
+            <th>Estado</th>
+            <th>Referencia</th>
+            <th>Fecha</th>
+            <th>Ticket ID</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of pagos">
+            <td>{{ p.id }}</td>
+            <td>{{ p.monto }}</td>
+            <td>{{ p.metodoPago }}</td>
+            <td>{{ p.estado }}</td>
+            <td>{{ p.referencia }}</td>
+            <td>{{ p.fecha }}</td>
+            <td>{{ p.ticketId }}</td>
+            <td class="actions">
+              <button type="button" class="danger" (click)="eliminarPago(p)">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card list-card">
+      <div class="list-header">
+        <h2>Listado de facturas</h2>
+        <span>{{ facturas.length }} total</span>
+      </div>
+
+      <div *ngIf="loadingFacturas" class="empty-state">Cargando facturas...</div>
+
+      <div *ngIf="!loadingFacturas && !facturas.length" class="empty-state">
+        No hay facturas registradas.
+      </div>
+
+      <table *ngIf="!loadingFacturas && facturas.length">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Número</th>
+            <th>Subtotal</th>
+            <th>Impuesto</th>
+            <th>Total</th>
+            <th>Pago ID</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let f of facturas">
+            <td>{{ f.id }}</td>
+            <td>{{ f.numeroFactura }}</td>
+            <td>{{ f.subtotal }}</td>
+            <td>{{ f.impuesto }}</td>
+            <td>{{ f.total }}</td>
+            <td>{{ f.pagoId }}</td>
+            <td class="actions">
+              <button type="button" class="danger" (click)="eliminarFactura(f)">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>

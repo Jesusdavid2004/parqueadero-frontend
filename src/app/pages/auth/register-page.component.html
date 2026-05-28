@@ -1,0 +1,81 @@
+<div class="auth-shell">
+  <div class="auth-card">
+    <div class="auth-header">
+      <div class="brand-badge">P.</div>
+      <p class="eyebrow">Sistema de parqueadero</p>
+      <h1>Crear cuenta</h1>
+      <p class="subtitle">Registra un usuario para ingresar al sistema.</p>
+    </div>
+
+    <div *ngIf="error" class="alert alert-error">
+      {{ error }}
+    </div>
+
+    <div *ngIf="success" class="alert alert-success">
+      {{ success }}
+    </div>
+
+    <form #registerForm="ngForm" class="auth-form" (ngSubmit)="register()">
+      <label>
+        Username
+        <input
+          type="text"
+          name="username"
+          [(ngModel)]="form.username"
+          required
+          placeholder="Ingresa tu username"
+        />
+      </label>
+
+      <label>
+        Email
+        <input
+          type="email"
+          name="email"
+          [(ngModel)]="form.email"
+          required
+          placeholder="correo@ejemplo.com"
+        />
+      </label>
+
+      <label>
+        Contraseña
+        <input
+          type="password"
+          name="password"
+          [(ngModel)]="form.password"
+          required
+          minlength="4"
+          placeholder="Mínimo 4 caracteres"
+        />
+      </label>
+
+      <label>
+        Rol
+        <select name="rol" [(ngModel)]="form.rol">
+          <option value="CLIENTE">CLIENTE</option>
+          <option value="ADMIN">ADMIN</option>
+        </select>
+      </label>
+
+      <label *ngIf="form.rol === 'CLIENTE'">
+        Cliente ID
+        <input
+          type="number"
+          name="clienteId"
+          [(ngModel)]="form.clienteId"
+          placeholder="Ej. 1"
+        />
+      </label>
+
+      <button type="submit" class="primary-btn" [disabled]="loading || registerForm.invalid">
+        {{ loading ? 'Registrando...' : 'Crear cuenta' }}
+      </button>
+    </form>
+
+    <div class="auth-footer">
+      <span>Ya tienes cuenta?</span>
+      <button type="button" class="link-btn" (click)="irLogin()">Ir al login</button>
+    </div>
+  </div>
+</div>

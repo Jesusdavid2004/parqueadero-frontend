@@ -1,0 +1,133 @@
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand">P.</div>
+
+    <nav class="sidebar-nav">
+      <button
+        type="button"
+        class="nav-item"
+        (click)="volverDashboard()"
+        title="Dashboard admin"
+      >
+        ←
+      </button>
+
+      <button
+        type="button"
+        class="nav-item active"
+        title="Menú recursivo"
+      >
+        ☰
+      </button>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <header class="page-header">
+      <div>
+        <p class="eyebrow">Administración</p>
+        <h1>Menú recursivo</h1>
+        <p class="description">
+          Visualiza la estructura jerárquica del menú conectado al backend.
+        </p>
+      </div>
+
+      <div class="header-actions">
+        <div class="pill">
+          {{ contarNodos(menus) }} nodos
+        </div>
+
+        <button
+          type="button"
+          class="primary-btn"
+          (click)="cargarMenus()"
+          [disabled]="loading"
+        >
+          {{ loading ? 'Cargando...' : 'Actualizar' }}
+        </button>
+      </div>
+    </header>
+
+    <section *ngIf="error" class="alert alert-error">
+      {{ error }}
+    </section>
+
+    <section class="grid">
+      <div class="card summary-card">
+        <h2>Resumen</h2>
+
+        <div class="summary-list">
+          <div class="summary-item">
+            <span class="label">Raíces</span>
+            <strong>{{ menus.length }}</strong>
+          </div>
+
+          <div class="summary-item">
+            <span class="label">Nodos totales</span>
+            <strong>{{ contarNodos(menus) }}</strong>
+          </div>
+
+          <div class="summary-item">
+            <span class="label">Estado</span>
+            <strong>{{ loading ? 'Sincronizando' : 'Disponible' }}</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="card tree-card">
+        <div class="list-header">
+          <h2>Estructura del menú</h2>
+          <span>{{ menus.length }} raíz</span>
+        </div>
+
+        <div *ngIf="loading" class="empty-state">
+          Cargando menú...
+        </div>
+
+        <div *ngIf="!loading && !menus.length" class="empty-state">
+          No hay datos del menú todavía.
+        </div>
+
+        <div *ngIf="!loading && menus.length" class="tree">
+          <ng-container
+            *ngTemplateOutlet="nodeTemplate; context: { $implicit: menus }"
+          ></ng-container>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<ng-template #nodeTemplate let-items>
+  <div class="tree-level">
+    <div class="tree-node" *ngFor="let item of items">
+      <div class="node-card">
+        <div class="node-top">
+          <div class="node-title">
+            <strong>{{ item.nombre }}</strong>
+            <small>{{ item.ruta || 'Sin ruta' }}</small>
+          </div>
+
+          <span
+            class="status"
+            [class.inactive]="!item.activo"
+          >
+            {{ item.activo ? 'Activo' : 'Inactivo' }}
+          </span>
+        </div>
+
+        <div class="node-meta">
+          <span>ID: {{ item.id }}</span>
+          <span>Padre: {{ item.padreId ?? 'Raíz' }}</span>
+          <span>Hijos: {{ item.hijos?.length || 0 }}</span>
+        </div>
+      </div>
+
+      <div class="tree-children" *ngIf="item.hijos?.length">
+        <ng-container
+          *ngTemplateOutlet="nodeTemplate; context: { $implicit: item.hijos }"
+        ></ng-container>
+      </div>
+    </div>
+  </div>
+</ng-template>
