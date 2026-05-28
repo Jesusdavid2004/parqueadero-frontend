@@ -120,7 +120,7 @@ export class VehiculosPageComponent implements OnInit {
       return;
     }
 
-    const payload: Omit<Vehiculo, 'id'> = {
+    const payload: Omit<Vehiculo, 'id' | 'fechaCreacion' | 'fechaActualizacion' | 'activo'> = {
       placa: this.modelo.placa,
       marca: this.modelo.marca,
       modelo: this.modelo.modelo,

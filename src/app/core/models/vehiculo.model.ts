@@ -1,7 +1,7 @@
+import { BaseEntity } from './base.model';
 import { TipoVehiculo } from './enums-parqueadero.enum';
 
-export interface Vehiculo {
-  id: number;
+export interface Vehiculo extends BaseEntity {
   placa: string;
   marca: string;
   modelo: string;

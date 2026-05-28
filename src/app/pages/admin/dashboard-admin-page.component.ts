@@ -12,6 +12,11 @@ import { FacturaService } from '../../core/services/factura.service';
 import { ReservaService } from '../../core/services/reserva.service';
 import { MenuService } from '../../core/services/menu.service';
 import { AuthService } from '../../core/services/auth.service';
+import { EspacioParqueoService } from '../../core/services/espacio-parqueo.service';
+import { SedeService } from '../../core/services/sede.service';
+import { ZonaService } from '../../core/services/zona.service';
+import { TarifaService } from '../../core/services/tarifa.service';
+import { EmpleadoService } from '../../core/services/empleado.service';
 
 import { Cliente } from '../../core/models/cliente.model';
 import { Vehiculo } from '../../core/models/vehiculo.model';
@@ -20,6 +25,11 @@ import { Pago } from '../../core/models/pago.model';
 import { Factura } from '../../core/models/factura.model';
 import { Reserva } from '../../core/models/reserva.model';
 import { MenuItem } from '../../core/models/menu.model';
+import { EspacioParqueo } from '../../core/models/espacio-parqueo.model';
+import { Sede } from '../../core/models/sede.model';
+import { Zona } from '../../core/models/zona.model';
+import { Tarifa } from '../../core/models/tarifa.model';
+import { Empleado } from '../../core/models/empleado.model';
 
 @Component({
   selector: 'app-dashboard-admin-page',
@@ -38,6 +48,11 @@ export class DashboardAdminPageComponent implements OnInit {
   private facturaService = inject(FacturaService);
   private reservaService = inject(ReservaService);
   private menuService = inject(MenuService);
+  private espacioService = inject(EspacioParqueoService);
+  private sedeService = inject(SedeService);
+  private zonaService = inject(ZonaService);
+  private tarifaService = inject(TarifaService);
+  private empleadoService = inject(EmpleadoService);
 
   clientes: Cliente[] = [];
   vehiculos: Vehiculo[] = [];
@@ -46,6 +61,11 @@ export class DashboardAdminPageComponent implements OnInit {
   facturas: Factura[] = [];
   reservas: Reserva[] = [];
   menus: MenuItem[] = [];
+  espacios: EspacioParqueo[] = [];
+  sedes: Sede[] = [];
+  zonas: Zona[] = [];
+  tarifas: Tarifa[] = [];
+  empleados: Empleado[] = [];
 
   loading = true;
   error = '';
@@ -69,11 +89,7 @@ export class DashboardAdminPageComponent implements OnInit {
 
   irRutaMenu(item: MenuItem): void {
     const ruta = item.ruta?.trim();
-
-    if (!ruta || !item.activo) {
-      return;
-    }
-
+    if (!ruta || !item.activo) return;
     this.router.navigateByUrl(ruta);
   }
 
@@ -98,6 +114,11 @@ export class DashboardAdminPageComponent implements OnInit {
       pagos: this.pagoService.listar().pipe(catchError(() => of([]))),
       facturas: this.facturaService.listar().pipe(catchError(() => of([]))),
       reservas: this.reservaService.listar().pipe(catchError(() => of([]))),
+      espacios: this.espacioService.listar().pipe(catchError(() => of([]))),
+      sedes: this.sedeService.listar().pipe(catchError(() => of([]))),
+      zonas: this.zonaService.listar().pipe(catchError(() => of([]))),
+      tarifas: this.tarifaService.listar().pipe(catchError(() => of([]))),
+      empleados: this.empleadoService.listar().pipe(catchError(() => of([]))),
       menus: this.menuService.listarArbol().pipe(
         catchError((err) => {
           console.error('Error real cargando menú', err);
@@ -117,6 +138,11 @@ export class DashboardAdminPageComponent implements OnInit {
         this.pagos = resp.pagos;
         this.facturas = resp.facturas;
         this.reservas = resp.reservas;
+        this.espacios = resp.espacios;
+        this.sedes = resp.sedes;
+        this.zonas = resp.zonas;
+        this.tarifas = resp.tarifas;
+        this.empleados = resp.empleados;
         this.menus = resp.menus;
         this.loading = false;
       },
@@ -129,14 +155,12 @@ export class DashboardAdminPageComponent implements OnInit {
 
   contarMenus(items: MenuItem[]): number {
     let total = 0;
-
     for (const item of items) {
       total += 1;
       if (item.hijos?.length) {
         total += this.contarMenus(item.hijos);
       }
     }
-
     return total;
   }
 }

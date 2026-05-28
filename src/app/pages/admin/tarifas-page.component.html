@@ -1,0 +1,50 @@
+<div class="page-shell">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Administración</p>
+      <h1>Tarifas</h1>
+      <p class="description">Gestiona las tarifas por tipo de vehículo.</p>
+    </div>
+    <button type="button" class="primary-btn" (click)="volverDashboard()">Volver al dashboard</button>
+  </header>
+
+  <section *ngIf="error" class="alert alert-error">{{ error }}</section>
+
+  <section class="grid">
+    <div class="card form-card">
+      <h2>{{ editando ? 'Editar tarifa' : 'Nueva tarifa' }}</h2>
+      <form #f="ngForm" (ngSubmit)="guardar()">
+        <label>Tipo de vehículo
+          <select name="tipoVehiculo" [(ngModel)]="modelo.tipoVehiculo" required>
+            <option *ngFor="let t of tiposVehiculo" [value]="t">{{ t }}</option>
+          </select>
+        </label>
+        <label>Valor por hora<input type="number" name="valorHora" [(ngModel)]="modelo.valorHora" required min="0" step="100" /></label>
+        <label>Valor por día<input type="number" name="valorDia" [(ngModel)]="modelo.valorDia" required min="0" step="100" /></label>
+        <label>Valor fracción<input type="number" name="valorFraccion" [(ngModel)]="modelo.valorFraccion" required min="0" step="100" /></label>
+        <div class="form-actions">
+          <button type="submit" class="primary-btn" [disabled]="loading || f.invalid">{{ editando ? 'Actualizar' : 'Guardar' }}</button>
+          <button type="button" class="secondary-btn" (click)="nuevo()">Limpiar</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="card list-card">
+      <div class="list-header"><h2>Listado de tarifas</h2><span>{{ tarifas.length }} total</span></div>
+      <div *ngIf="loading" class="empty-state">Cargando...</div>
+      <div *ngIf="!loading && !tarifas.length" class="empty-state">No hay tarifas registradas.</div>
+      <table *ngIf="!loading && tarifas.length">
+        <thead><tr><th>Tipo vehículo</th><th>Valor hora</th><th>Valor día</th><th>Valor fracción</th><th>Acciones</th></tr></thead>
+        <tbody>
+          <tr *ngFor="let t of tarifas">
+            <td>{{ t.tipoVehiculo }}</td><td>{{ t.valorHora | number:'1.0-0' }}</td><td>{{ t.valorDia | number:'1.0-0' }}</td><td>{{ t.valorFraccion | number:'1.0-0' }}</td>
+            <td class="actions">
+              <button type="button" (click)="editar(t)">Editar</button>
+              <button type="button" class="danger" (click)="eliminar(t)">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>

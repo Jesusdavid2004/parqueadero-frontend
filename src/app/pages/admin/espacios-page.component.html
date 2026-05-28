@@ -1,0 +1,100 @@
+<div class="page-shell">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Administración</p>
+      <h1>Espacios de parqueo</h1>
+      <p class="description">Gestiona los espacios de parqueo del sistema.</p>
+    </div>
+
+    <button type="button" class="primary-btn" (click)="volverDashboard()">
+      Volver al dashboard
+    </button>
+  </header>
+
+  <section *ngIf="error" class="alert alert-error">
+    {{ error }}
+  </section>
+
+  <section class="grid">
+    <div class="card form-card">
+      <h2>{{ editando ? 'Editar espacio' : 'Nuevo espacio' }}</h2>
+
+      <form #f="ngForm" (ngSubmit)="guardar()">
+        <label>
+          Código
+          <input type="text" name="codigo" [(ngModel)]="modelo.codigo" required />
+        </label>
+
+        <label>
+          Ubicación
+          <input type="text" name="ubicacion" [(ngModel)]="modelo.ubicacion" required />
+        </label>
+
+        <label>
+          Estado
+          <select name="estado" [(ngModel)]="modelo.estado" required>
+            <option *ngFor="let estado of estadosEspacio" [value]="estado">{{ estado }}</option>
+          </select>
+        </label>
+
+        <label>
+          Tipo de vehículo permitido
+          <select name="tipoVehiculoPermitido" [(ngModel)]="modelo.tipoVehiculoPermitido" required>
+            <option *ngFor="let tipo of tiposVehiculo" [value]="tipo">{{ tipo }}</option>
+          </select>
+        </label>
+
+        <label>
+          Zona
+          <select name="zonaId" [(ngModel)]="modelo.zonaId">
+            <option [ngValue]="null">Sin zona asignada</option>
+            <option *ngFor="let z of zonas" [ngValue]="z.id">{{ z.nombre }} - {{ z.tipoZona }}</option>
+          </select>
+        </label>
+
+        <div class="form-actions">
+          <button type="submit" class="primary-btn" [disabled]="loading || f.invalid">
+            {{ editando ? 'Actualizar' : 'Guardar' }}
+          </button>
+          <button type="button" class="secondary-btn" (click)="nuevo()">Limpiar</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="card list-card">
+      <div class="list-header">
+        <h2>Listado de espacios</h2>
+        <span>{{ espacios.length }} total</span>
+      </div>
+
+      <div *ngIf="loading" class="empty-state">Cargando...</div>
+      <div *ngIf="!loading && !espacios.length" class="empty-state">No hay espacios registrados.</div>
+
+      <table *ngIf="!loading && espacios.length">
+        <thead>
+          <tr>
+            <th>Código</th>
+            <th>Ubicación</th>
+            <th>Estado</th>
+            <th>Tipo permitido</th>
+            <th>Zona</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let e of espacios">
+            <td>{{ e.codigo }}</td>
+            <td>{{ e.ubicacion }}</td>
+            <td>{{ e.estado }}</td>
+            <td>{{ e.tipoVehiculoPermitido }}</td>
+            <td>{{ e.zonaNombre || 'Sin zona' }}</td>
+            <td class="actions">
+              <button type="button" (click)="editar(e)">Editar</button>
+              <button type="button" class="danger" (click)="eliminar(e)">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>

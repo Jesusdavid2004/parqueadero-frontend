@@ -39,8 +39,8 @@
           <p class="eyebrow">Sistema de parqueadero</p>
           <h1>Hola, administrador</h1>
           <p class="hero-text">
-            Administra clientes, vehículos, tickets, pagos, facturas, reservas y
-            verifica el árbol de menú conectado al backend.
+            Administra clientes, vehículos, tickets, pagos, facturas, reservas,
+            espacios, sedes, zonas, tarifas, empleados y el menú del sistema.
           </p>
           <button class="secondary-btn" type="button" (click)="navegarCliente()">
             Ver vista como cliente
@@ -60,17 +60,27 @@
       <div class="quick-grid">
         <div class="quick-card">
           <h3>{{ clientes.length }}</h3>
-          <p>Clientes registrados</p>
+          <p>Clientes</p>
         </div>
-
         <div class="quick-card">
           <h3>{{ vehiculos.length }}</h3>
-          <p>Vehículos registrados</p>
+          <p>Vehículos</p>
         </div>
-
         <div class="quick-card">
           <h3>{{ tickets.length }}</h3>
-          <p>Tickets creados</p>
+          <p>Tickets</p>
+        </div>
+        <div class="quick-card">
+          <h3>{{ reservas.length }}</h3>
+          <p>Reservas</p>
+        </div>
+        <div class="quick-card">
+          <h3>{{ espacios.length }}</h3>
+          <p>Espacios</p>
+        </div>
+        <div class="quick-card">
+          <h3>{{ empleados.length }}</h3>
+          <p>Empleados</p>
         </div>
       </div>
 
@@ -126,7 +136,6 @@
             <h3>{{ pagos.length }}</h3>
             <p>Pagos</p>
           </div>
-
           <div class="mini-box">
             <h3>{{ facturas.length }}</h3>
             <p>Facturas</p>
@@ -135,17 +144,30 @@
 
         <div class="analytics">
           <h3>Resumen general</h3>
-
           <div class="metric-line">
             <span>Reservas</span>
             <strong>{{ reservas.length }}</strong>
           </div>
-
           <div class="metric-line">
-            <span>Tickets</span>
-            <strong>{{ tickets.length }}</strong>
+            <span>Espacios</span>
+            <strong>{{ espacios.length }}</strong>
           </div>
-
+          <div class="metric-line">
+            <span>Sedes</span>
+            <strong>{{ sedes.length }}</strong>
+          </div>
+          <div class="metric-line">
+            <span>Zonas</span>
+            <strong>{{ zonas.length }}</strong>
+          </div>
+          <div class="metric-line">
+            <span>Tarifas</span>
+            <strong>{{ tarifas.length }}</strong>
+          </div>
+          <div class="metric-line">
+            <span>Empleados</span>
+            <strong>{{ empleados.length }}</strong>
+          </div>
           <div class="metric-line">
             <span>Nodos de menú</span>
             <strong>{{ contarMenus(menus) }}</strong>
@@ -156,8 +178,8 @@
       <div class="promo-card">
         <h3>Estado del sistema</h3>
         <p>
-          El dashboard está conectado al backend Spring Boot y consulta clientes,
-          vehículos, tickets, pagos, facturas, reservas y menú.
+          El dashboard está conectado al backend Spring Boot y consulta todas las
+          entidades del sistema.
         </p>
         <button type="button" (click)="cargarDatos()">Actualizar datos</button>
       </div>

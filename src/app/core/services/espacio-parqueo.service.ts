@@ -10,7 +10,27 @@ import { API_URL } from './api-base';
 export class EspacioParqueoService {
   private http = inject(HttpClient);
 
+  listar(): Observable<EspacioParqueo[]> {
+    return this.http.get<EspacioParqueo[]>(`${API_URL}/espacios`);
+  }
+
   listarDisponibles(): Observable<EspacioParqueo[]> {
     return this.http.get<EspacioParqueo[]>(`${API_URL}/espacios/disponibles`);
+  }
+
+  buscarPorId(id: number): Observable<EspacioParqueo> {
+    return this.http.get<EspacioParqueo>(`${API_URL}/espacios/${id}`);
+  }
+
+  guardar(espacio: Omit<EspacioParqueo, 'id' | 'fechaCreacion' | 'fechaActualizacion' | 'activo' | 'zonaNombre'>): Observable<EspacioParqueo> {
+    return this.http.post<EspacioParqueo>(`${API_URL}/espacios`, espacio);
+  }
+
+  actualizar(id: number, espacio: Omit<EspacioParqueo, 'id' | 'fechaCreacion' | 'fechaActualizacion' | 'activo' | 'zonaNombre'>): Observable<EspacioParqueo> {
+    return this.http.put<EspacioParqueo>(`${API_URL}/espacios/${id}`, espacio);
+  }
+
+  eliminar(id: number): Observable<void> {
+    return this.http.delete<void>(`${API_URL}/espacios/${id}`);
   }
 }

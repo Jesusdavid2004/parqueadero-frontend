@@ -1,0 +1,55 @@
+<div class="page-shell">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Administración</p>
+      <h1>Zonas</h1>
+      <p class="description">Gestiona las zonas de parqueo por sede.</p>
+    </div>
+    <button type="button" class="primary-btn" (click)="volverDashboard()">Volver al dashboard</button>
+  </header>
+
+  <section *ngIf="error" class="alert alert-error">{{ error }}</section>
+
+  <section class="grid">
+    <div class="card form-card">
+      <h2>{{ editando ? 'Editar zona' : 'Nueva zona' }}</h2>
+      <form #f="ngForm" (ngSubmit)="guardar()">
+        <label>Nombre<input type="text" name="nombre" [(ngModel)]="modelo.nombre" required /></label>
+        <label>Descripción<input type="text" name="descripcion" [(ngModel)]="modelo.descripcion" required /></label>
+        <label>Tipo de zona
+          <select name="tipoZona" [(ngModel)]="modelo.tipoZona" required>
+            <option *ngFor="let t of tiposZona" [value]="t">{{ t }}</option>
+          </select>
+        </label>
+        <label>Sede
+          <select name="sedeId" [(ngModel)]="modelo.sedeId" required>
+            <option [ngValue]="null">Seleccione una sede</option>
+            <option *ngFor="let s of sedes" [ngValue]="s.id">{{ s.nombre }} - {{ s.ciudad }}</option>
+          </select>
+        </label>
+        <div class="form-actions">
+          <button type="submit" class="primary-btn" [disabled]="loading || f.invalid">{{ editando ? 'Actualizar' : 'Guardar' }}</button>
+          <button type="button" class="secondary-btn" (click)="nuevo()">Limpiar</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="card list-card">
+      <div class="list-header"><h2>Listado de zonas</h2><span>{{ zonas.length }} total</span></div>
+      <div *ngIf="loading" class="empty-state">Cargando...</div>
+      <div *ngIf="!loading && !zonas.length" class="empty-state">No hay zonas registradas.</div>
+      <table *ngIf="!loading && zonas.length">
+        <thead><tr><th>Nombre</th><th>Descripción</th><th>Tipo</th><th>Sede</th><th>Acciones</th></tr></thead>
+        <tbody>
+          <tr *ngFor="let z of zonas">
+            <td>{{ z.nombre }}</td><td>{{ z.descripcion }}</td><td>{{ z.tipoZona }}</td><td>{{ z.sedeNombre || z.sedeId }}</td>
+            <td class="actions">
+              <button type="button" (click)="editar(z)">Editar</button>
+              <button type="button" class="danger" (click)="eliminar(z)">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>

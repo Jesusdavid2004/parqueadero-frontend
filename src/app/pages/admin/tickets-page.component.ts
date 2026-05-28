@@ -131,7 +131,7 @@ export class TicketsPageComponent implements OnInit {
       return;
     }
 
-    const payload: Omit<Ticket, 'id'> = {
+    const payload: Omit<Ticket, 'id' | 'fechaCreacion' | 'fechaActualizacion' | 'activo'> = {
       codigoTicket: this.modelo.codigoTicket,
       horaEntrada: this.modelo.horaEntrada ? `${this.modelo.horaEntrada}:00` : '',
       horaSalida: this.modelo.horaSalida ? `${this.modelo.horaSalida}:00` : null,

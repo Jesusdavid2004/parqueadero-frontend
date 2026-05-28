@@ -1,7 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
 import { Factura } from '../models/factura.model';
 import { API_URL } from './api-base';
 
@@ -19,7 +18,7 @@ export class FacturaService {
     return this.http.get<Factura>(`${API_URL}/facturas/${id}`);
   }
 
-  guardar(factura: Omit<Factura, 'id'>): Observable<Factura> {
+  guardar(factura: Omit<Factura, 'id' | 'fechaCreacion' | 'fechaActualizacion' | 'activo'>): Observable<Factura> {
     return this.http.post<Factura>(`${API_URL}/facturas`, factura);
   }
 

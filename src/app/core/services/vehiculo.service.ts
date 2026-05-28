@@ -1,7 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
 import { Vehiculo } from '../models/vehiculo.model';
 import { API_URL } from './api-base';
 
@@ -19,11 +18,11 @@ export class VehiculoService {
     return this.http.get<Vehiculo>(`${API_URL}/vehiculos/${id}`);
   }
 
-  guardar(vehiculo: Omit<Vehiculo, 'id'>): Observable<Vehiculo> {
+  guardar(vehiculo: Omit<Vehiculo, 'id' | 'fechaCreacion' | 'fechaActualizacion' | 'activo'>): Observable<Vehiculo> {
     return this.http.post<Vehiculo>(`${API_URL}/vehiculos`, vehiculo);
   }
 
-  actualizar(id: number, vehiculo: Omit<Vehiculo, 'id'>): Observable<Vehiculo> {
+  actualizar(id: number, vehiculo: Omit<Vehiculo, 'id' | 'fechaCreacion' | 'fechaActualizacion' | 'activo'>): Observable<Vehiculo> {
     return this.http.put<Vehiculo>(`${API_URL}/vehiculos/${id}`, vehiculo);
   }
 

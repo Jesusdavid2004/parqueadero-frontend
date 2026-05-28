@@ -1,7 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
 import { Reserva } from '../models/reserva.model';
 import { API_URL } from './api-base';
 
@@ -19,11 +18,11 @@ export class ReservaService {
     return this.http.get<Reserva>(`${API_URL}/reservas/${id}`);
   }
 
-  guardar(reserva: Omit<Reserva, 'id'>): Observable<Reserva> {
+  guardar(reserva: Omit<Reserva, 'id' | 'fechaCreacion' | 'fechaActualizacion' | 'activo'>): Observable<Reserva> {
     return this.http.post<Reserva>(`${API_URL}/reservas`, reserva);
   }
 
-  actualizar(id: number, reserva: Omit<Reserva, 'id'>): Observable<Reserva> {
+  actualizar(id: number, reserva: Omit<Reserva, 'id' | 'fechaCreacion' | 'fechaActualizacion' | 'activo'>): Observable<Reserva> {
     return this.http.put<Reserva>(`${API_URL}/reservas/${id}`, reserva);
   }
 

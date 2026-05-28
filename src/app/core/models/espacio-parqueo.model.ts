@@ -1,7 +1,7 @@
+import { BaseEntity } from './base.model';
 import { EstadoEspacio, TipoVehiculo } from './enums-parqueadero.enum';
 
-export interface EspacioParqueo {
-  id: number;
+export interface EspacioParqueo extends BaseEntity {
   codigo: string;
   ubicacion: string;
   estado: EstadoEspacio;

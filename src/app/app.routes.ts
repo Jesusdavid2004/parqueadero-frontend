@@ -9,6 +9,12 @@ import { VehiculosPageComponent } from './pages/admin/vehiculos-page.component';
 import { TicketsPageComponent } from './pages/admin/tickets-page.component';
 import { PagosFacturasPageComponent } from './pages/admin/pagos-facturas-page.component';
 import { MenuPageComponent } from './pages/admin/menu-page.component';
+import { ReservasPageComponent } from './pages/admin/reservas-page.component';
+import { EspaciosPageComponent } from './pages/admin/espacios-page.component';
+import { SedesPageComponent } from './pages/admin/sedes-page.component';
+import { ZonasPageComponent } from './pages/admin/zonas-page.component';
+import { TarifasPageComponent } from './pages/admin/tarifas-page.component';
+import { EmpleadosPageComponent } from './pages/admin/empleados-page.component';
 
 import { authGuard } from './core/services/auth.guard';
 import { roleGuard } from './core/services/role.guard';
@@ -44,6 +50,42 @@ export const routes: Routes = [
   {
     path: 'admin/pagos-facturas',
     component: PagosFacturasPageComponent,
+    canActivate: [authGuard, roleGuard],
+    data: { role: 'ADMIN' }
+  },
+  {
+    path: 'admin/reservas',
+    component: ReservasPageComponent,
+    canActivate: [authGuard, roleGuard],
+    data: { role: 'ADMIN' }
+  },
+  {
+    path: 'admin/espacios',
+    component: EspaciosPageComponent,
+    canActivate: [authGuard, roleGuard],
+    data: { role: 'ADMIN' }
+  },
+  {
+    path: 'admin/sedes',
+    component: SedesPageComponent,
+    canActivate: [authGuard, roleGuard],
+    data: { role: 'ADMIN' }
+  },
+  {
+    path: 'admin/zonas',
+    component: ZonasPageComponent,
+    canActivate: [authGuard, roleGuard],
+    data: { role: 'ADMIN' }
+  },
+  {
+    path: 'admin/tarifas',
+    component: TarifasPageComponent,
+    canActivate: [authGuard, roleGuard],
+    data: { role: 'ADMIN' }
+  },
+  {
+    path: 'admin/empleados',
+    component: EmpleadosPageComponent,
     canActivate: [authGuard, roleGuard],
     data: { role: 'ADMIN' }
   },

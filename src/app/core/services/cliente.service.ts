@@ -18,11 +18,11 @@ export class ClienteService {
     return this.http.get<Cliente>(`${API_URL}/clientes/${id}`);
   }
 
-  guardar(cliente: Omit<Cliente, 'id'>): Observable<Cliente> {
+  guardar(cliente: Omit<Cliente, 'id' | 'fechaCreacion' | 'fechaActualizacion' | 'activo'>): Observable<Cliente> {
     return this.http.post<Cliente>(`${API_URL}/clientes`, cliente);
   }
 
-  actualizar(id: number, cliente: Omit<Cliente, 'id'>): Observable<Cliente> {
+  actualizar(id: number, cliente: Omit<Cliente, 'id' | 'fechaCreacion' | 'fechaActualizacion' | 'activo'>): Observable<Cliente> {
     return this.http.put<Cliente>(`${API_URL}/clientes/${id}`, cliente);
   }
 

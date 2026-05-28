@@ -1,0 +1,45 @@
+<div class="page-shell">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Administración</p>
+      <h1>Sedes</h1>
+      <p class="description">Gestiona las sedes del sistema de parqueadero.</p>
+    </div>
+    <button type="button" class="primary-btn" (click)="volverDashboard()">Volver al dashboard</button>
+  </header>
+
+  <section *ngIf="error" class="alert alert-error">{{ error }}</section>
+
+  <section class="grid">
+    <div class="card form-card">
+      <h2>{{ editando ? 'Editar sede' : 'Nueva sede' }}</h2>
+      <form #f="ngForm" (ngSubmit)="guardar()">
+        <label>Nombre<input type="text" name="nombre" [(ngModel)]="modelo.nombre" required /></label>
+        <label>Dirección<input type="text" name="direccion" [(ngModel)]="modelo.direccion" required /></label>
+        <label>Ciudad<input type="text" name="ciudad" [(ngModel)]="modelo.ciudad" required /></label>
+        <div class="form-actions">
+          <button type="submit" class="primary-btn" [disabled]="loading || f.invalid">{{ editando ? 'Actualizar' : 'Guardar' }}</button>
+          <button type="button" class="secondary-btn" (click)="nuevo()">Limpiar</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="card list-card">
+      <div class="list-header"><h2>Listado de sedes</h2><span>{{ sedes.length }} total</span></div>
+      <div *ngIf="loading" class="empty-state">Cargando...</div>
+      <div *ngIf="!loading && !sedes.length" class="empty-state">No hay sedes registradas.</div>
+      <table *ngIf="!loading && sedes.length">
+        <thead><tr><th>Nombre</th><th>Dirección</th><th>Ciudad</th><th>Acciones</th></tr></thead>
+        <tbody>
+          <tr *ngFor="let s of sedes">
+            <td>{{ s.nombre }}</td><td>{{ s.direccion }}</td><td>{{ s.ciudad }}</td>
+            <td class="actions">
+              <button type="button" (click)="editar(s)">Editar</button>
+              <button type="button" class="danger" (click)="eliminar(s)">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>

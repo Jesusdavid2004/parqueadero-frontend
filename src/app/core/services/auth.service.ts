@@ -3,30 +3,9 @@ import { isPlatformBrowser } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { API_URL } from './api-base';
+import { AuthResponse, LoginRequest, RegisterRequest, RolUsuario } from '../models/auth.model';
 
-export type RolUsuario = 'ADMIN' | 'CLIENTE';
-
-export interface AuthResponse {
-  id: number;
-  username: string;
-  email: string;
-  rol: RolUsuario;
-  clienteId: number | null;
-  mensaje: string;
-}
-
-export interface LoginRequest {
-  username: string;
-  password: string;
-}
-
-export interface RegisterRequest {
-  username: string;
-  email: string;
-  password: string;
-  rol?: RolUsuario;
-  clienteId?: number | null;
-}
+export type { AuthResponse, LoginRequest, RegisterRequest, RolUsuario };
 
 interface SessionData {
   user: AuthResponse;

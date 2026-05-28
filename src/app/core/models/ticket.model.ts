@@ -1,7 +1,7 @@
+import { BaseEntity } from './base.model';
 import { EstadoTicket } from './enums-parqueadero.enum';
 
-export interface Ticket {
-  id: number;
+export interface Ticket extends BaseEntity {
   codigoTicket: string;
   horaEntrada: string;
   horaSalida: string | null;

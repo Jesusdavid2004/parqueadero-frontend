@@ -144,7 +144,7 @@ export class PagosFacturasPageComponent implements OnInit {
       return;
     }
 
-    const payload: Omit<Pago, 'id'> = {
+    const payload: Omit<Pago, 'id' | 'fechaCreacion' | 'fechaActualizacion' | 'activo'> = {
       monto: 0,
       metodoPago: this.modeloPago.metodoPago as Pago['metodoPago'],
       estado: this.modeloPago.estado as Pago['estado'],
@@ -182,7 +182,7 @@ export class PagosFacturasPageComponent implements OnInit {
       return;
     }
 
-    const payload: Omit<Factura, 'id'> = {
+    const payload: Omit<Factura, 'id' | 'fechaCreacion' | 'fechaActualizacion' | 'activo'> = {
       numeroFactura: '',
       subtotal: 0,
       impuesto: 0,
