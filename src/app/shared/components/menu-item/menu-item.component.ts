@@ -29,7 +29,9 @@ export class MenuItemComponent {
   toggle(): void {
     if (this.tieneHijos) {
       this.expanded = !this.expanded;
-    } else if (this.menu.ruta && this.menu.activo) {
+    }
+    
+    if (this.menu.ruta && this.menu.activo) {
       this.router.navigateByUrl(this.menu.ruta);
     }
   }
