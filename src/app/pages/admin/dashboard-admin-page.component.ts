@@ -93,7 +93,10 @@ export class DashboardAdminPageComponent implements OnInit {
 
   get menuSidebar(): MenuItem[] {
     const raizInicio = this.menus.find(item => item.ruta === '/admin');
-    return raizInicio?.hijos ?? [];
+    if (raizInicio?.hijos?.length) {
+      return raizInicio.hijos;
+    }
+    return this.menus.filter(item => item.ruta !== '/admin');
   }
 
   logout(): void {
