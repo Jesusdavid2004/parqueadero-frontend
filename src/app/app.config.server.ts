@@ -4,9 +4,7 @@ import { appConfig } from './app.config';
 
 const serverConfig: ApplicationConfig = {
   providers: [
-    provideServerRendering({
-      trustProxyHeaders: true
-    })
+    provideServerRendering()
   ]
 };
 
