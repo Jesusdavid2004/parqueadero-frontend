@@ -1,17 +1,28 @@
 <div class="menu-item" [class.nivel-1]="nivel === 1" [class.nivel-2]="nivel === 2" [class.nivel-3]="nivel >= 3">
+  <a
+    *ngIf="menu.ruta && !tieneHijos"
+    [routerLink]="menu.ruta"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{exact: true}"
+    class="menu-link"
+    [class.inactive]="!menu.activo"
+  >
+    <span class="menu-text">{{ menu.nombre }}</span>
+  </a>
+
   <button
+    *ngIf="tieneHijos"
     type="button"
     class="menu-link"
-    [class.has-children]="tieneHijos"
+    [class.has-children]="true"
     [class.expanded]="expanded"
-    [class.active]="esRutaActiva(menu.ruta)"
     [class.inactive]="!menu.activo"
     [class.separator]="esSeparador"
     [disabled]="!menu.activo"
     (click)="toggle()"
   >
     <span class="menu-text">{{ menu.nombre }}</span>
-    <span *ngIf="tieneHijos" class="arrow">{{ expanded ? '▼' : '▶' }}</span>
+    <span class="arrow">{{ expanded ? '▼' : '▶' }}</span>
   </button>
 
   <div class="submenu" *ngIf="expanded && tieneHijos">

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, inject } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { Component, Input } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { MenuItem } from '../../../core/models/menu.model';
 
 @Component({
@@ -11,8 +11,6 @@ import { MenuItem } from '../../../core/models/menu.model';
   styleUrl: './menu-item.component.scss'
 })
 export class MenuItemComponent {
-  private router = inject(Router);
-
   @Input({ required: true }) menu!: MenuItem;
   @Input() nivel = 0;
 
@@ -27,17 +25,6 @@ export class MenuItemComponent {
   }
 
   toggle(): void {
-    if (this.tieneHijos) {
-      this.expanded = !this.expanded;
-    }
-    
-    if (this.menu.ruta && this.menu.activo) {
-      this.router.navigateByUrl(this.menu.ruta);
-    }
-  }
-
-  esRutaActiva(ruta: string | null | undefined): boolean {
-    if (!ruta) return false;
-    return this.router.url === ruta;
+    this.expanded = !this.expanded;
   }
 }
