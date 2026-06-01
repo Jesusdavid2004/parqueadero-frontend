@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { ChangeDetectorRef, Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 
@@ -24,6 +24,7 @@ export class PagosFacturasPageComponent implements OnInit {
   private ticketService = inject(TicketService);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
+  private platformId = inject(PLATFORM_ID);
 
   pagos: Pago[] = [];
   facturas: Factura[] = [];
@@ -50,6 +51,7 @@ export class PagosFacturasPageComponent implements OnInit {
   };
 
   ngOnInit(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
     this.cargarTickets();
     this.cargarPagos();
     this.cargarFacturas();

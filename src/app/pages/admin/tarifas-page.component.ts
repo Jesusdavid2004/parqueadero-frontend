@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { ChangeDetectorRef, Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { TarifaService } from '../../core/services/tarifa.service';
@@ -16,6 +16,7 @@ export class TarifasPageComponent implements OnInit {
   private tarifaService = inject(TarifaService);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
+  private platformId = inject(PLATFORM_ID);
 
   tarifas: Tarifa[] = [];
   loading = false;
@@ -26,7 +27,7 @@ export class TarifasPageComponent implements OnInit {
   modelo = { tipoVehiculo: 'CARRO', valorHora: 0, valorDia: 0, valorFraccion: 0 };
   tiposVehiculo = ['CARRO', 'MOTO', 'CAMION'];
 
-  ngOnInit(): void { this.cargarTarifas(); }
+  ngOnInit(): void { if (!isPlatformBrowser(this.platformId)) return; this.cargarTarifas(); }
 
   volverDashboard(): void { this.router.navigate(['/admin']); }
 

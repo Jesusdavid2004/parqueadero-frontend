@@ -37,6 +37,7 @@ export class LoginPageComponent {
         this.error =
           err?.error?.mensaje ||
           err?.error?.message ||
+          (typeof err?.error === 'string' ? err.error : null) ||
           'No se pudo iniciar sesión';
       }
     });

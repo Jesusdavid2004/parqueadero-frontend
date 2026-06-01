@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { ChangeDetectorRef, Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { ZonaService } from '../../core/services/zona.service';
@@ -19,6 +19,7 @@ export class ZonasPageComponent implements OnInit {
   private sedeService = inject(SedeService);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
+  private platformId = inject(PLATFORM_ID);
 
   zonas: Zona[] = [];
   sedes: Sede[] = [];
@@ -31,6 +32,7 @@ export class ZonasPageComponent implements OnInit {
   tiposZona = ['CARROS', 'MOTOS', 'CAMIONES', 'MIXTA'];
 
   ngOnInit(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
     this.cargarSedes();
     this.cargarZonas();
   }

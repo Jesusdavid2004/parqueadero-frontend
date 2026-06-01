@@ -1,3 +1,6 @@
+// Estilos compartidos para páginas CRUD
+// Importar en cada página con: @import '../../../shared/styles/crud-page';
+
 :host {
   display: block;
   min-height: 100vh;
@@ -6,75 +9,7 @@
   font-family: var(--font-sans);
 }
 
-.shell {
-  min-height: 100vh;
-  display: grid;
-  grid-template-columns: 280px 1fr;
-  gap: var(--spacing-lg);
-}
-
-.sidebar {
-  background: var(--gray-900);
-  border-radius: var(--border-radius-xl);
-  color: var(--text-inverse);
-  padding: var(--spacing-lg);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  box-shadow: var(--shadow-xl);
-  position: sticky;
-  top: var(--spacing-lg);
-  height: fit-content;
-}
-
-.brand {
-  width: 80px;
-  height: 80px;
-  border-radius: var(--border-radius-lg);
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-  display: grid;
-  place-items: center;
-  font-size: 32px;
-  font-weight: 800;
-  margin-bottom: var(--spacing-lg);
-  box-shadow: 0 8px 16px rgba(59, 130, 246, 0.3);
-}
-
-.sidebar-nav {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-sm);
-  width: 100%;
-}
-
-.nav-item {
-  width: 100%;
-  height: 56px;
-  border-radius: var(--border-radius-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--spacing-sm);
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--text-inverse);
-  border: none;
-  cursor: pointer;
-  font-size: var(--font-size-lg);
-  transition: all var(--transition-base);
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.15);
-    transform: translateX(4px);
-  }
-}
-
-.nav-item.active {
-  background: var(--primary);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
-}
-
-.content {
+.page-shell {
   background: var(--bg-secondary);
   border-radius: var(--border-radius-xl);
   padding: var(--spacing-xl);
@@ -189,7 +124,9 @@ label {
   font-weight: 600;
 }
 
-input {
+input,
+select,
+textarea {
   border-radius: var(--border-radius-md);
   border: 1px solid var(--border-color);
   padding: 12px 14px;
@@ -202,6 +139,10 @@ input {
     border-color: var(--primary);
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
   }
+}
+
+select {
+  cursor: pointer;
 }
 
 .form-actions {
@@ -328,6 +269,12 @@ td {
   border: 1px solid #fecaca;
 }
 
+.alert-success {
+  background: #d1fae5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
 .empty-state {
   padding: var(--spacing-xl);
   border-radius: var(--border-radius-md);
@@ -348,30 +295,11 @@ td {
     padding: var(--spacing-md);
   }
 
-  .shell {
-    grid-template-columns: 1fr;
-  }
-
-  .sidebar {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    position: static;
-  }
-
-  .sidebar-nav {
-    flex-direction: row;
-  }
-
-  .nav-item {
-    width: 56px;
-  }
-
   .page-header {
     flex-direction: column;
   }
 
-  .list-card {
+  .card {
     overflow-x: auto;
   }
 }

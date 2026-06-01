@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://parqueadero-backend-hcva.onrender.com/api'
+  apiUrl: 'http://localhost:8080/api'
 };

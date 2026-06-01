@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, OnInit, inject, ChangeDetectorRef, PLATFORM_ID } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 
 import { MenuService } from '../../core/services/menu.service';
@@ -16,12 +16,14 @@ export class MenuPageComponent implements OnInit {
   private menuService = inject(MenuService);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
+  private platformId = inject(PLATFORM_ID);
 
   menus: MenuItem[] = [];
   loading = false;
   error = '';
 
   ngOnInit(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
     this.cargarMenus();
   }
 

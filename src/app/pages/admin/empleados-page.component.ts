@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { ChangeDetectorRef, Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { EmpleadoService } from '../../core/services/empleado.service';
@@ -16,6 +16,7 @@ export class EmpleadosPageComponent implements OnInit {
   private empleadoService = inject(EmpleadoService);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
+  private platformId = inject(PLATFORM_ID);
 
   empleados: Empleado[] = [];
   loading = false;
@@ -25,7 +26,7 @@ export class EmpleadosPageComponent implements OnInit {
 
   modelo = { identificacion: '', nombre: '', telefono: '', correo: '', codigoEmpleado: '', cargo: '' };
 
-  ngOnInit(): void { this.cargarEmpleados(); }
+  ngOnInit(): void { if (!isPlatformBrowser(this.platformId)) return; this.cargarEmpleados(); }
 
   volverDashboard(): void { this.router.navigate(['/admin']); }
 

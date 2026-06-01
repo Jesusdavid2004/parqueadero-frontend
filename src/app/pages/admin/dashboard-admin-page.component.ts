@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -31,15 +31,18 @@ import { Zona } from '../../core/models/zona.model';
 import { Tarifa } from '../../core/models/tarifa.model';
 import { Empleado } from '../../core/models/empleado.model';
 
+import { MenuItemComponent } from '../../shared/components/menu-item/menu-item.component';
+
 @Component({
   selector: 'app-dashboard-admin-page',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, MenuItemComponent],
   templateUrl: './dashboard-admin-page.component.html',
   styleUrls: ['./dashboard-admin-page.component.scss']
 })
 export class DashboardAdminPageComponent implements OnInit {
   private router = inject(Router);
+  private platformId = inject(PLATFORM_ID);
   private authService = inject(AuthService);
   private clienteService = inject(ClienteService);
   private vehiculoService = inject(VehiculoService);
@@ -71,6 +74,7 @@ export class DashboardAdminPageComponent implements OnInit {
   error = '';
 
   ngOnInit(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
     this.cargarDatos();
   }
 
@@ -82,17 +86,6 @@ export class DashboardAdminPageComponent implements OnInit {
     this.router.navigate(['/cliente']);
   }
 
-  logout(): void {
-    this.authService.logout();
-    this.router.navigate(['/login']);
-  }
-
-  irRutaMenu(item: MenuItem): void {
-    const ruta = item.ruta?.trim();
-    if (!ruta || !item.activo) return;
-    this.router.navigateByUrl(ruta);
-  }
-
   esRutaActiva(ruta: string | null | undefined): boolean {
     if (!ruta) return false;
     return this.router.url === ruta;
@@ -101,6 +94,11 @@ export class DashboardAdminPageComponent implements OnInit {
   get menuSidebar(): MenuItem[] {
     const raizInicio = this.menus.find(item => item.ruta === '/admin');
     return raizInicio?.hijos ?? [];
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 
   cargarDatos(): void {

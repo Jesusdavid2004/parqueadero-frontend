@@ -14,9 +14,11 @@
       </button>
 
       <div class="sidebar-menu" *ngIf="menuSidebar.length">
-        <ng-container
-          *ngTemplateOutlet="menuSidebarNode; context: { $implicit: menuSidebar, nivel: 0 }"
-        ></ng-container>
+        <app-menu-item
+          *ngFor="let item of menuSidebar"
+          [menu]="item"
+          [nivel]="0"
+        ></app-menu-item>
       </div>
     </nav>
 
@@ -186,27 +188,3 @@
     </aside>
   </main>
 </div>
-
-<ng-template #menuSidebarNode let-items let-nivel="nivel">
-  <div class="menu-level" [class.is-child]="nivel > 0">
-    <div class="menu-item" *ngFor="let item of items">
-      <button
-        type="button"
-        class="menu-link"
-        [class.has-children]="item.hijos?.length"
-        [class.active]="esRutaActiva(item.ruta)"
-        [class.inactive]="!item.activo"
-        [disabled]="!item.activo"
-        (click)="irRutaMenu(item)"
-      >
-        {{ item.nombre }}
-      </button>
-
-      <div class="menu-children" *ngIf="item.hijos?.length">
-        <ng-container
-          *ngTemplateOutlet="menuSidebarNode; context: { $implicit: item.hijos, nivel: nivel + 1 }"
-        ></ng-container>
-      </div>
-    </div>
-  </div>
-</ng-template>

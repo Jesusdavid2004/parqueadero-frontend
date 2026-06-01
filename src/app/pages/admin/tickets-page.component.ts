@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { ChangeDetectorRef, Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { TicketService } from '../../core/services/ticket.service';
@@ -22,6 +22,7 @@ export class TicketsPageComponent implements OnInit {
   private espacioService = inject(EspacioParqueoService);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
+  private platformId = inject(PLATFORM_ID);
 
   tickets: Ticket[] = [];
   vehiculos: Vehiculo[] = [];
@@ -44,6 +45,7 @@ export class TicketsPageComponent implements OnInit {
   estadosTicket = ['ABIERTO', 'CERRADO', 'FACTURADO'];
 
   ngOnInit(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
     this.cargarVehiculos();
     this.cargarEspaciosDisponibles();
     this.cargarTickets();

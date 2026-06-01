@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { ChangeDetectorRef, Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { SedeService } from '../../core/services/sede.service';
@@ -16,6 +16,7 @@ export class SedesPageComponent implements OnInit {
   private sedeService = inject(SedeService);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
+  private platformId = inject(PLATFORM_ID);
 
   sedes: Sede[] = [];
   loading = false;
@@ -26,6 +27,7 @@ export class SedesPageComponent implements OnInit {
   modelo = { nombre: '', direccion: '', ciudad: '' };
 
   ngOnInit(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
     this.cargarSedes();
   }
 

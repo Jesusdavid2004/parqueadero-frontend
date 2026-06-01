@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { ChangeDetectorRef, Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { EspacioParqueoService } from '../../core/services/espacio-parqueo.service';
@@ -19,6 +19,7 @@ export class EspaciosPageComponent implements OnInit {
   private zonaService = inject(ZonaService);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
+  private platformId = inject(PLATFORM_ID);
 
   espacios: EspacioParqueo[] = [];
   zonas: Zona[] = [];
@@ -40,6 +41,7 @@ export class EspaciosPageComponent implements OnInit {
   tiposVehiculo = ['CARRO', 'MOTO', 'CAMION'];
 
   ngOnInit(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
     this.cargarZonas();
     this.cargarEspacios();
   }
